@@ -1,10 +1,46 @@
-name: GitHub Actions Demo
-on: [push]
+name: Pre-Merge Checks
+on: pull_request:
+      types: [opened, synchronize, edited, reopened]
 jobs:
-  Explore-GitHub-Actions:
+  test:
     runs-on: ubuntu-latest
+    env:
+      PGHOST: localhost
+      PGUSER: Sector-272-Outpost-Market
+      PGPASSWORD: ''
+      RAILSENV: test
+    services:
+      postgres:
+        image: postgres
+        ports:
+          - "5432:5432"
+        env:
+          POSTGRES_DB: Sector-272-Outpost-Market-test
+          POSTGRES_USER: Sector-272-Outpost-Market
+          POSTGRES_PASSWORD: ''
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
-      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - name: Setup Ruby
+        uses: actions/checkout@v2
+        uses: ruby/setup-ruby@v1.99.0
+        with: 
+          ruby-version: 2.7.2
+          bundler-cache: true
+        run: bundle install
+      - name: Setup DB
+        run: bundle exec rails db:create RAILS_ENV=test
+        run: bundle exec rails db:migrate RAILS_ENV=test
+      - name: RSpec tests
+        run: bundle exec rspec
+        
+      
+        
+
+        
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
       - name: Check out repository code
