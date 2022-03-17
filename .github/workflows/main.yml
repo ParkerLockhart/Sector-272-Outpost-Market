@@ -1,6 +1,7 @@
 name: Pre-Merge Checks
-on: pull_request:
-      types: [opened, synchronize, edited, reopened]
+on: 
+      pull_request:
+            types: [opened, synchronize, edited, reopened]
 
 jobs:
   test:
