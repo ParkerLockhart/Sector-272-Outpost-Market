@@ -1,10 +1,18 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   root to: 'welcome#index'
+  resources :users
+  get '/auth', to: 'users#auth_form'
+  post '/auth', to: 'users#auth_user'
   get '/register', to: 'users#new'
-  get '/login', to: 'sessions#create'
+  get '/login', to: 'users#login'
+  get '/auth', to: 'sessions#create'
+  get '/signup', to: 'users#signup'
+  post '/signup', to: 'users#create'
   get '/logout', to: 'sessions#destroy'
-  
+  get '/auth/google_oauth2/callback', to: 'sessions#create'
+  get '/dashboard', to: 'users#show'
+
   resources :merchants, only: [:show] do
     resources :dashboard, only: [:index]
     resources :items, except: [:destroy]
