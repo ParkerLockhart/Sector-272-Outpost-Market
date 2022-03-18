@@ -17,7 +17,7 @@ RSpec.describe User, type: :model do
   describe 'class methods' do
     describe 'find_or_create_by_auth' do
       it 'returns user registered or logged in via oauth' do
-        auth_data = {"info" => {"email" => "jeff@email.com"}}
+        auth_data = {info: {email: "jeff@email.com"}}
 
         user = User.find_or_create_by_auth(auth_data)
 
