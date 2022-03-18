@@ -20,7 +20,7 @@ RSpec.describe 'login page' do
     click_button("Log In")
 
     expect(current_path).to eq('/login')
-    expect(page).to have_content("Error: Unable to authenticate user. Please try again.")
+    expect(page).to have_content("Error: Invalid username or password.")
   end
 
   it 'does not allow access to dashboard if user not found' do
@@ -29,10 +29,10 @@ RSpec.describe 'login page' do
     click_button("Log In")
 
     expect(current_path).to eq('/login')
-    expect(page).to have_content("Error: Unable to authenticate user. Please try again, or register if new user.")
+    expect(page).to have_content("Error: Invalid username or password.")
   end
 
   it 'has a link to log in with google' do
     expect(page).to have_link('Login with Google')
   end
-end 
+end
