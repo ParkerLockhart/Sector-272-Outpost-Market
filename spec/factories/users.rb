@@ -1,7 +1,8 @@
 FactoryBot.define do
   factory :user do
-    username { "MyString" }
-    password_digest { "MyString" }
-    role { 1 }
+    username { Faker::Hipster.word }
+    password { "password123" }
+    password_confirmation { "password123" }
+    role { 0 }
   end
 end

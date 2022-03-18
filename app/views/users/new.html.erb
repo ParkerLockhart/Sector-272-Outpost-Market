@@ -1,0 +1,11 @@
+Register with username:<br>
+<%= form_with(model: @user, local: true) do |f| %>
+  <%= f.label :username %>
+  <%= f.text_field :username %>
+  <%= f.label :password %>
+  <%= f.text_field :password %>
+  <%= f.label :password_confirmation %>
+  <%= f.text_field :password_confirmation %>
+  <%= f.submit "Register" %>
+<% end %><br><br>
+<%= link_to "Register with Google", "/auth/google_oauth2", method: :post %>
