@@ -4,19 +4,9 @@ class SessionsController < ApplicationController
   end
 
   def create
-    if User.exists?(username: params[:username])
-      user = User.find_by username: params[:username]
-      if user.authenticate(params[:password])
-        session[:user_id] = user.id
-        redirect_to '/dashboard'
-      else
-        flash.now[:error] = "Error: Invalid username or password."
-        render :new
-      end
-    else
-      flash.now[:error] = "Error: Invalid username or password."
-      render :new
-    end
+    @user = User.find_or_create_by_auth(request.env["omniauth.auth"])
+    session[:user_id] = @user.id
+    redirect_to '/dashboard'
   end
 
   def destroy

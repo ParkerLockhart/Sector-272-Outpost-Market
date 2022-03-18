@@ -15,11 +15,11 @@ class UsersController < ApplicationController
         redirect_to "/dashboard"
       else
         redirect_to "/login"
-        flash[:alert] = "Error: Unable to authenticate user. Please try again."
+        flash[:alert] = "Error: Invalid username or password."
       end
     else
       redirect_to "/login"
-      flash[:alert] = "Error: Unable to authenticate user. Please try again, or register if new user."
+      flash[:alert] = "Error: Invalid username or password."
     end
   end
 
