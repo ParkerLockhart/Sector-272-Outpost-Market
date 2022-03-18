@@ -8,4 +8,4 @@ Register with username:<br>
   <%= f.text_field :password_confirmation %>
   <%= f.submit "Register" %>
 <% end %><br><br>
-<%= link_to "Register with Google", "/auth/google_oauth2" %>
+<%= link_to "Register with Google", "/auth/google_oauth2", method: :post %>
