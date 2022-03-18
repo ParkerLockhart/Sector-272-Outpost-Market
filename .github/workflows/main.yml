@@ -11,12 +11,12 @@ jobs:
         ports:
           - "5432:5432"
         env:
-          POSTGRES_DB: Sector-272-Outpost-Market-test
+          POSTGRES_DB: Sector-272-Outpost-Market_test
           POSTGRES_USER: Sector-272-Outpost-Market
           POSTGRES_PASSWORD: ''
     env:
       RAILS_ENV: test
-      DATABASE_URL: "postgres://rails:password@localhost:5432/Sector-272-Outpost-Market-test"
+      DATABASE_URL: "postgres://rails:password@localhost:5432/Sector-272-Outpost-Market_test"
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
