@@ -21,4 +21,17 @@ RSpec.describe 'user dashboard' do
     expect(current_path).to eq(root_path)
     expect(page).to have_content('Successfully logged out')
   end
+
+  it 'has a link to register as a merchant' do
+    user = create(:user)
+    visit '/login'
+    fill_in 'username', with: user.username
+    fill_in 'password', with: 'password123'
+    click_button('Log In')
+
+    expect(current_path).to eq('/dashboard')
+    expect(page).to have_link('Register as a Merchant')
+    click_link('Register as a Merchant')
+    expect(current_path).to eq('/merchants/new')
+  end
 end
