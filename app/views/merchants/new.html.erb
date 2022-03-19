@@ -1,0 +1,7 @@
+New Merchant Account
+<%= form_with(model: @merchant, local: true) do |f| %>
+  <%= f.label 'Shop name: (must be unique)' %>
+  <%= f.text_field :name %>
+  Note: All new merchants must be reviewed by the outpost authorities before their shop can be made visible to the public. Please allow 5 astronomical days for the review process.
+  <%= f.submit 'Submit' %>
+<% end %>
