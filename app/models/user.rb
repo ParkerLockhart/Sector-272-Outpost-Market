@@ -1,4 +1,7 @@
 class User < ApplicationRecord
+  has_many :merchant_users
+  has_many :merchants, through: :merchant_users
+  
   validates :username, presence: true
   validates :username, uniqueness: true
   enum role: [:default, :manager, :admin]
