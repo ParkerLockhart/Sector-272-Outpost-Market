@@ -149,10 +149,4 @@ RSpec.describe Merchant, type: :model do
         expect(@merchant_1.top_items).to eq(top_5_items)
       end
     end
-
-    describe '#best_day' do
-      it 'returns day with highest revenue' do
-        expect(@merchant_1.best_day).to eq(@invoice_8.created_at)
-      end
-    end
   end
