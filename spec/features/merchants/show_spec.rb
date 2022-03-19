@@ -49,4 +49,9 @@ RSpec.describe 'Merchant Dashboard' do
     click_link("Discounts")
     expect(current_path).to eq("/merchants/#{merchant_1.id}/discounts")
   end
+
+  it 'has a link back to main user dashboard' do
+    click_link('Back to main dashboard')
+    expect(current_path).to eq('/dashboard')
+  end 
 end
