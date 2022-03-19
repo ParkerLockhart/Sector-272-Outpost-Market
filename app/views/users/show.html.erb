@@ -1,1 +1,7 @@
 <%= link_to 'logout', '/logout' %>
+
+<% if @user.role == "default"%>
+  <%= link_to 'Register as a Merchant', '/merchants/new' %>
+<% elsif @user.role == "manager" %>
+  <%= link_to 'Merchant Dashboard', '/merchants/dashboard' %>
+<% end %>

@@ -4,6 +4,7 @@ RSpec.describe Merchant, type: :model do
   describe "validations" do
     it { should validate_presence_of(:name) }
     it { should validate_presence_of(:status) }
+    it { should validate_uniqueness_of(:name) }
   end
 
   describe "relationships" do
@@ -13,6 +14,8 @@ RSpec.describe Merchant, type: :model do
     it { should have_many(:invoices).through(:invoice_items) }
     it { should have_many(:transactions).through(:invoices) }
     it { should have_many(:customers).through(:invoices) }
+    it { should have_many(:merchant_users) }
+    it { should have_many(:users).through(:merchant_users) }
   end
 
   describe 'class methods' do
@@ -123,7 +126,7 @@ RSpec.describe Merchant, type: :model do
     end
 
     describe '#ready_items' do
-      it 'returns the items which have not yet shipped' do
+      xit 'returns the items which have not yet shipped' do
         expect(@merchant_1.ready_items[0]).to eq(@item_3)
         expect(@merchant_1.ready_items[1]).to eq(@item_4)
         expect(@merchant_1.ready_items[2]).to eq(@item_7)
@@ -144,12 +147,6 @@ RSpec.describe Merchant, type: :model do
       it 'returns the top 5 items by revenue for a merchant' do
         top_5_items = [@item_1, @item_2, @item_3, @item_8, @item_4]
         expect(@merchant_1.top_items).to eq(top_5_items)
-      end
-    end
-
-    describe '#best_day' do
-      it 'returns day with highest revenue' do
-        expect(@merchant_1.best_day).to eq(@invoice_8.created_at)
       end
     end
   end

@@ -1,6 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
+  describe 'relationships' do
+    it { should have_many(:merchant_users) }
+    it { should have_many(:merchants).through(:merchant_users) }
+  end
+  
   describe 'validations' do
     it { should validate_presence_of(:username) }
     it { should validate_uniqueness_of(:username) }

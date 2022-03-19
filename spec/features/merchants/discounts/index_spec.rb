@@ -13,7 +13,14 @@ RSpec.describe 'merchant discount index page' do
   let!(:invoice_1) {FactoryBot.create(:invoice)}
 
   before(:each) do
+    VCR.insert_cassette('upcoming_holidays')
+    VCR.insert_cassette('next_holidays')
     visit "/merchants/#{merchant_a.id}/discounts"
+  end
+
+  after(:each) do
+    VCR.eject_cassette('upcoming_holidays')
+    VCR.eject_cassette('next_holidays')
   end
 
   it 'shows each discount amount for merchant' do
@@ -28,7 +35,7 @@ RSpec.describe 'merchant discount index page' do
 
   it 'shows 3 upcoming holidays' do
     within("#upcoming-holidays") do
-      expect(page).to have_content("Washington's Birthday")
+      expect(page).to have_content("Juneteenth")
       expect(page).to have_content("Good Friday")
       expect(page).to have_content("Memorial Day")
     end

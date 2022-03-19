@@ -5,8 +5,11 @@ class Merchant < ApplicationRecord
   has_many :invoices, through: :invoice_items
   has_many :transactions, through: :invoices
   has_many :customers, through: :invoices
+  has_many :merchant_users
+  has_many :users, through: :merchant_users
 
   validates :name, :status, presence: true
+  validates :name, uniqueness: true
 
   enum status: [:disabled, :enabled]
 
@@ -52,14 +55,5 @@ class Merchant < ApplicationRecord
 
   def self.filter_merchant_status(status_enum)
     where(status: status_enum)
-  end
-
-  def best_day
-    invoices.where(status: 2)
-            .joins(:invoice_items)
-            .select('invoices.created_at, sum(invoice_items.unit_price * invoice_items.quantity) as revenue')
-            .group('invoices.created_at')
-            .order('revenue desc', 'invoices.created_at desc')
-            .first&.created_at
   end
 end

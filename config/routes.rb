@@ -9,8 +9,8 @@ Rails.application.routes.draw do
   get '/auth/google_oauth2/callback', to: 'sessions#create'
   get '/dashboard', to: 'users#show'
 
-  resources :merchants, only: [:show] do
-    resources :dashboard, only: [:index]
+  resources :merchants, only: [:show, :new, :create] do
+    get '/dashboard', to: 'merchants#show'
     resources :items, except: [:destroy]
     resources :invoices, only: [:index, :show, :update]
     resources :invoice_items, only: [:update]
