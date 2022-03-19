@@ -17,4 +17,11 @@ private
       redirect_to root_path
     end
   end
+
+  def require_manager_user
+    if current_user.role == "default"
+      flash[:alert] = "You must have a merchant account to access this page."
+      redirect_to '/dashboard'
+    end
+  end
 end
