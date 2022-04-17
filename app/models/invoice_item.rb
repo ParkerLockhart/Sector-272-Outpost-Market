@@ -5,7 +5,7 @@ class InvoiceItem < ApplicationRecord
   has_many :discounts, through: :merchant
 
   validates :item, :invoice, :status, presence: true
-  validates :quantity, :unit_price, numericality: { only_integer: true }
+  validates :quantity, numericality: true
 
     enum status: {
     pending: 0,
@@ -22,16 +22,16 @@ class InvoiceItem < ApplicationRecord
     discounts.where('threshold <= ?', quantity).order(amount: :desc).first
   end
 
-  def order_total
-    (unit_price.to_f / 100) * quantity
+  def item_total
+    calculated_price * quantity
   end
 
   def discounted_total
     if applicable_discount.nil?
-      order_total
+      item_total
     else
-      discount_amount = (applicable_discount.amount.to_f / 100) * order_total
-      order_total - discount_amount
+      discount_amount = (applicable_discount.amount.to_f / 100) * item_total
+      item_total - discount_amount
     end
   end
 end
