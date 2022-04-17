@@ -2,7 +2,7 @@ class Merchant < ApplicationRecord
   has_many :items
   has_many :discounts
   has_many :invoice_items, through: :items
-  has_many :invoices, through: :invoice_items
+  has_many :invoices
   has_many :transactions, through: :invoices
   has_many :customers, through: :invoices
   has_many :merchant_users
@@ -16,24 +16,26 @@ class Merchant < ApplicationRecord
   def self.top_merchants
     joins(invoices: [:invoice_items, :transactions])
       .where(transactions: { result: 1 })
-      .select("merchants.*, sum(invoice_items.unit_price * invoice_items.quantity) as merchant_revenue")
+      .select("merchants.*, sum(invoices.total) as merchant_revenue")
       .group(:id)
       .limit(5)
       .order(merchant_revenue: :desc)
   end
 
   def top_customers
+    # still counting invoices that were cancelled, not sure why
     customers.joins(invoices: :transactions)
             .where("transactions.result = ?", 1)
             .where("invoices.status = ?", 1)
-            .select("customers.*, count('transactions.id') as transaction_count")
+            .select("customers.*, sum(invoices.total) as purchase_total")
             .group('customers.id')
-            .order(transaction_count: :desc)
+            .order(purchase_total: :desc)
             .distinct
             .limit(5)
   end
 
   def ready_items
+    #rework to return ready items per invoice
     items.joins(invoice_items: :invoice)
         .where(invoice_items: {status: "packaged"})
         .select("items.*, invoices.created_at")
@@ -41,9 +43,10 @@ class Merchant < ApplicationRecord
   end
 
   def top_items
+    #does not work correctly when more than one type of item on invoice: rework
     items.joins(invoices: :transactions)
           .where(invoices: {status: 1}, transactions: {result: 1})
-          .select("items.id, items.name, sum(invoice_items.quantity * invoice_items.unit_price) as revenue")
+          .select("items.id, items.name, sum(invoices.total) as revenue")
           .group(:id)
           .order("revenue desc")
           .limit(5)
